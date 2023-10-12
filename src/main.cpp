@@ -8,6 +8,7 @@ int main(const int argc, const char *argv[]) {
   }
 
   auto lox = Lox();
+  Lox::hadError = false;
 
   if (argc == 1) {
     lox.runFile(argv[0]);

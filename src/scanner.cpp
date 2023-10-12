@@ -1,4 +1,5 @@
 #include "scanner.h"
+#include "lox.h"
 #include "token_type.h"
 
 const std::vector<Token> &Scanner::scanTokens() {
@@ -43,6 +44,9 @@ void Scanner::scanToken() {
     break;
   case '*':
     addToken(TokenType::STAR);
+    break;
+  default:
+    Lox::error(line, "Unexpected character.");
     break;
   }
 }
