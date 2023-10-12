@@ -57,6 +57,25 @@ void Scanner::scanToken() {
   case '>':
     addToken(match('=') ? TokenType::GREATER_EQUAL : TokenType::GREATER);
     break;
+  case '/':
+    if (match('/')) {
+      while (peek() != '\n' && !isAtEnd()) {
+        advance();
+      }
+    } else {
+      addToken(TokenType::SLASH);
+    }
+    break;
+
+  // Intentional fall through and skipping whitespace
+  case ' ':
+  case '\r':
+  case '\t':
+    break;
+
+  case '\n':
+    ++line;
+    break;
   default:
     Lox::error(line, "Unexpected character.");
     break;
@@ -76,6 +95,7 @@ void Scanner::addToken(TokenType type, std::string literal) {
 
 /**
  * Returns true if its an comparison operator (<=, ==, >=) else false
+ * Also used for / to check if it is a comment or not
  */
 bool Scanner::match(char expected) {
   if (isAtEnd()) {
@@ -89,4 +109,11 @@ bool Scanner::match(char expected) {
   ++current;
 
   return true;
+}
+
+char Scanner ::peek() {
+  if (isAtEnd()) {
+    return '\0';
+  }
+  return source.at(current);
 }
