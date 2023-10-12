@@ -48,7 +48,7 @@ enum class TokenType {
   VAR,
   WHILE,
 
-  EOF
+  _EOF
 };
 
 #endif // !TOKEN_TYPE
