@@ -24,6 +24,7 @@ private:
   char advance();
   void addToken(TokenType token);
   void addToken(TokenType type, std::string literal);
+  bool match(char expected);
 };
 
 #endif // !SCANNER

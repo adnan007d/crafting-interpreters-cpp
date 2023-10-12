@@ -45,6 +45,18 @@ void Scanner::scanToken() {
   case '*':
     addToken(TokenType::STAR);
     break;
+  case '!':
+    addToken(match('=') ? TokenType::BANG_EQUAL : TokenType::BANG);
+    break;
+  case '=':
+    addToken(match('=') ? TokenType::EQUAL_EQUAL : TokenType::EQUAL);
+    break;
+  case '<':
+    addToken(match('=') ? TokenType::LESS_EQUAL : TokenType::LESS);
+    break;
+  case '>':
+    addToken(match('=') ? TokenType::GREATER_EQUAL : TokenType::GREATER);
+    break;
   default:
     Lox::error(line, "Unexpected character.");
     break;
@@ -60,4 +72,21 @@ void Scanner::addToken(TokenType type) { addToken(type, nullptr); }
 void Scanner::addToken(TokenType type, std::string literal) {
   std::string text = source.substr(start, current);
   tokens.emplace_back(type, std::move(text), std::move(literal), line);
+}
+
+/**
+ * Returns true if its an comparison operator (<=, ==, >=) else false
+ */
+bool Scanner::match(char expected) {
+  if (isAtEnd()) {
+    return false;
+  }
+
+  if (source.at(current) != expected) {
+    return false;
+  }
+
+  ++current;
+
+  return true;
 }

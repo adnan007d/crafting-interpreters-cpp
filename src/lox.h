@@ -4,7 +4,6 @@
 #include <string>
 class Lox {
 public:
-  void run(const std::string &data);
   void runFile(const std::string &path);
   void runPrompt();
 
@@ -13,6 +12,9 @@ public:
                      const std::string &message);
 
   static bool hadError;
+
+private:
+  void run(const std::string &data);
 };
 
 #endif // !LOX
