@@ -1,6 +1,10 @@
 #include "scanner.h"
 #include "lox.h"
+#include "token.h"
 #include "token_type.h"
+#include <charconv>
+#include <system_error>
+#include <variant>
 
 const std::vector<Token> &Scanner::scanTokens() {
   while (!isAtEnd()) {
@@ -94,9 +98,9 @@ bool Scanner::isAtEnd() { return current >= source.size(); }
 
 char Scanner::advance() { return source.at(current++); }
 
-void Scanner::addToken(TokenType type) { addToken(type, nullptr); }
+void Scanner::addToken(TokenType type) { addToken(type, std::monostate{}); }
 
-void Scanner::addToken(TokenType type, std::string literal) {
+void Scanner::addToken(TokenType type, literal_type literal) {
   std::string text = source.substr(start, current);
   tokens.emplace_back(type, std::move(text), std::move(literal), line);
 }
@@ -161,9 +165,16 @@ void Scanner::parseNumber() {
     }
   }
 
-std:
-  std::string number = source.substr(start, current);
-  addToken(TokenType::NUMBER, std::move(number));
+  double number{};
+
+  const auto result =
+      std::from_chars(source.data() + start, source.data() + current, number);
+
+  if (result.ec != std::errc{}) {
+    Lox::error(line, "Failed to parse number");
+    return;
+  }
+  addToken(TokenType::NUMBER, number);
 }
 
 char Scanner::peekNext() {
