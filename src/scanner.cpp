@@ -81,7 +81,11 @@ void Scanner::scanToken() {
     parseString();
     break;
   default:
-    Lox::error(line, "Unexpected character.");
+    if (isDigit(c)) {
+      parseNumber();
+    } else {
+      Lox::error(line, "Unexpected character.");
+    }
     break;
   }
 }
@@ -139,4 +143,32 @@ void Scanner::parseString() {
 
   std::string value = source.substr(start + 1, current - 1);
   addToken(TokenType::STRING, value);
+}
+
+bool Scanner::isDigit(char c) { return c >= '0' && c <= '9'; }
+
+void Scanner::parseNumber() {
+  while (isDigit(peek())) {
+    advance();
+  }
+
+  if (peek() == '.' && isDigit(peekNext())) {
+    // Consume .
+    advance();
+
+    while (isDigit(peek())) {
+      advance();
+    }
+  }
+
+std:
+  std::string number = source.substr(start, current);
+  addToken(TokenType::NUMBER, std::move(number));
+}
+
+char Scanner::peekNext() {
+  if (current + 1 >= source.size()) {
+    return '\0';
+  }
+  return source.at(current + 1);
 }

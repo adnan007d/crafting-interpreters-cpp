@@ -27,6 +27,9 @@ private:
   bool match(char expected);
   char peek();
   void parseString();
+  void parseNumber();
+  bool isDigit(char c);
+  char peekNext();
 };
 
 #endif // !SCANNER
