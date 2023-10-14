@@ -28,7 +28,7 @@ private:
   void parseIdentifier();
   bool isAlphaNumeric(char c);
 
-  std::string source{};
+  std::string        source{};
   std::vector<Token> tokens{};
 
   int start{0};

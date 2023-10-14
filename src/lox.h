@@ -11,10 +11,9 @@ public:
   static void report(int line, const std::string &where,
                      const std::string &message);
 
-  static bool hadError;
-
 private:
-  void run(const std::string &data);
+  static bool hadError;
+  void        run(const std::string &data);
 };
 
 #endif // !LOX

@@ -104,7 +104,7 @@ char Scanner::advance() { return source.at(current++); }
 void Scanner::addToken(TokenType type) { addToken(type, std::monostate{}); }
 
 void Scanner::addToken(TokenType type, literal_type literal) {
-  std::string text = source.substr(start, current);
+  std::string text = source.substr(start, current - start);
   tokens.emplace_back(type, std::move(text), std::move(literal), line);
 }
 
@@ -134,7 +134,7 @@ char Scanner ::peek() {
 }
 
 void Scanner::parseString() {
-  while (peek() != '"' && isAtEnd()) {
+  while (peek() != '"' && !isAtEnd()) {
     if (peek() == '\n') {
       ++line;
     }
@@ -147,8 +147,7 @@ void Scanner::parseString() {
   }
 
   advance();
-
-  std::string value = source.substr(start + 1, current - 1);
+  std::string value = source.substr(start + 1, current - start - 2);
   addToken(TokenType::STRING, value);
 }
 
@@ -192,11 +191,13 @@ bool Scanner::isAlpha(char c) {
 }
 
 void Scanner::parseIdentifier() {
-  // while (isAlphaNumeric(peek())) {
-  //   advance();
-  // }
+  while (isAlphaNumeric(peek())) {
+    advance();
+  }
+
   std::string_view text =
       std::string_view(source.data() + start, current - start);
+
   if (!keywords.contains(text)) {
     addToken(TokenType::IDENTIFIER);
   } else {

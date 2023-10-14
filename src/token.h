@@ -14,7 +14,7 @@ public:
         line{_line} {}
 
   friend std::ostream &operator<<(std::ostream &os, const Token &token) {
-    os << static_cast<int>(token.type) << ' ' << token.lexeme << ' '
+    os << "token " << static_cast<int>(token.type) << " lexeme " << token.lexeme << " line "
        << token.line;
 
     return os;

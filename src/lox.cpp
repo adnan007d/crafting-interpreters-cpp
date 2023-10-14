@@ -6,13 +6,15 @@
 #include <iostream>
 #include <iterator>
 
+bool Lox::hadError = false;
+
 void Lox::run(const std::string &data) {
   auto scnnaer = Scanner(data);
 
   const auto &tokens = scnnaer.scanTokens();
 
   for (const auto &token : tokens) {
-    std::cout << token;
+    std::cout << token << '\n';
   }
 }
 
@@ -24,13 +26,13 @@ void Lox::runFile(const std::string &path) {
 
   std::cout << data << '\n';
 
-  if (hadError) {
+  if (Lox::hadError) {
     std::exit(1);
   }
 
   run(data);
 
-  hadError = false;
+  Lox::hadError = false;
 }
 
 void Lox::error(int line, const std::string &message) {
@@ -40,7 +42,7 @@ void Lox::error(int line, const std::string &message) {
 void Lox::report(int line, const std::string &where,
                  const std::string &message) {
   std::cerr << "[line " << line << "] Error" << where + ": " << message << '\n';
-  hadError = true;
+  Lox::hadError = true;
 }
 
 void Lox::runPrompt() {
