@@ -9,24 +9,24 @@
 
 class Scanner {
 public:
-  Scanner(std::string _source) : source{std::move(_source)} {}
+  explicit Scanner(std::string _source) : source{std::move(_source)} {}
   const std::vector<Token> &scanTokens();
 
 private:
-  bool isAtEnd();
-  void scanToken();
-  char advance();
-  void addToken(TokenType type);
-  void addToken(TokenType type, literal_type literal);
-  bool match(char expected);
-  char peek();
-  void parseString();
-  void parseNumber();
-  bool isDigit(char c);
-  char peekNext();
-  bool isAlpha(char c);
-  void parseIdentifier();
-  bool isAlphaNumeric(char c);
+  bool        isAtEnd();
+  void        scanToken();
+  char        advance();
+  void        addToken(TokenType type);
+  void        addToken(TokenType type, literal_type literal);
+  bool        match(char expected);
+  char        peek();
+  void        parseString();
+  void        parseNumber();
+  static bool isDigit(char c);
+  char        peekNext();
+  static bool isAlpha(char c);
+  void        parseIdentifier();
+  static bool isAlphaNumeric(char c);
 
   std::string        source{};
   std::vector<Token> tokens{};

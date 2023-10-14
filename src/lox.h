@@ -12,6 +12,7 @@ public:
                      const std::string &message);
 
 private:
+  // NOLINTNEXTLINE
   static bool hadError;
   void        run(const std::string &data);
 };

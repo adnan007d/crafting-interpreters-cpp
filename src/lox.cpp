@@ -6,8 +6,10 @@
 #include <iostream>
 #include <iterator>
 
+// NOLINTNEXTLINE
 bool Lox::hadError = false;
 
+// NOLINTNEXTLINE
 void Lox::run(const std::string &data) {
   auto scnnaer = Scanner(data);
 
@@ -27,7 +29,7 @@ void Lox::runFile(const std::string &path) {
   std::cout << data << '\n';
 
   if (Lox::hadError) {
-    //NOLINTNEXTLINE
+    // NOLINTNEXTLINE
     std::exit(1);
   }
 
@@ -49,6 +51,6 @@ void Lox::report(int line, const std::string &where,
 void Lox::runPrompt() {
   std::string temp{};
   while (std::getline(std::cin, temp)) {
-    run(std::move(temp));
+    run(temp);
   }
 }

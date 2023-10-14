@@ -97,7 +97,9 @@ void Scanner::scanToken() {
   }
 }
 
-bool Scanner::isAtEnd() { return current >= source.size(); }
+bool Scanner::isAtEnd() {
+  return static_cast<std::size_t>(current) >= source.size();
+}
 
 char Scanner::advance() { return source.at(current++); }
 
@@ -180,7 +182,7 @@ void Scanner::parseNumber() {
 }
 
 char Scanner::peekNext() {
-  if (current + 1 >= source.size()) {
+  if (static_cast<std::size_t>(current) + 1 >= source.size()) {
     return '\0';
   }
   return source.at(current + 1);
