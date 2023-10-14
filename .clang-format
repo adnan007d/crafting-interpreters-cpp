@@ -1,0 +1,11 @@
+---
+Language: Cpp
+BasedOnStyle: LLVM
+IndentWidth: 2
+AlignConsecutiveDeclarations: true
+AlignConsecutiveMacros: true
+AlignTrailingComments: true
+BreakBeforeBraces: Attach
+ColumnLimit: 80
+SpacesBeforeTrailingComments: 1
+
