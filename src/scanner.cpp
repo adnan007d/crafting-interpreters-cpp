@@ -3,6 +3,7 @@
 #include "token.h"
 #include "token_type.h"
 #include <charconv>
+#include <string_view>
 #include <system_error>
 #include <variant>
 
@@ -87,6 +88,8 @@ void Scanner::scanToken() {
   default:
     if (isDigit(c)) {
       parseNumber();
+    } else if (isAlpha(c)) {
+      parseIdentifier();
     } else {
       Lox::error(line, "Unexpected character.");
     }
@@ -183,3 +186,22 @@ char Scanner::peekNext() {
   }
   return source.at(current + 1);
 }
+
+bool Scanner::isAlpha(char c) {
+  return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
+}
+
+void Scanner::parseIdentifier() {
+  // while (isAlphaNumeric(peek())) {
+  //   advance();
+  // }
+  std::string_view text =
+      std::string_view(source.data() + start, current - start);
+  if (!keywords.contains(text)) {
+    addToken(TokenType::IDENTIFIER);
+  } else {
+    addToken(keywords[text]);
+  }
+}
+
+bool Scanner::isAlphaNumeric(char c) { return isAlpha(c) || isDigit(c); }
