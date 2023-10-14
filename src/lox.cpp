@@ -27,6 +27,7 @@ void Lox::runFile(const std::string &path) {
   std::cout << data << '\n';
 
   if (Lox::hadError) {
+    //NOLINTNEXTLINE
     std::exit(1);
   }
 

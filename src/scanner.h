@@ -16,7 +16,7 @@ private:
   bool isAtEnd();
   void scanToken();
   char advance();
-  void addToken(TokenType token);
+  void addToken(TokenType type);
   void addToken(TokenType type, literal_type literal);
   bool match(char expected);
   char peek();
