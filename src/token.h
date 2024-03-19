@@ -14,17 +14,16 @@ public:
         line{_line} {}
 
   friend std::ostream &operator<<(std::ostream &os, const Token &token) {
-    os << "token " << static_cast<int>(token.type) << " lexeme " << token.lexeme << " line "
-       << token.line;
+    os << "token " << static_cast<int>(token.type) << " lexeme " << token.lexeme
+       << " line " << token.line;
 
     return os;
   }
 
-private:
-  TokenType type;
-  std::string lexeme;
+  TokenType    type;
+  std::string  lexeme;
   literal_type literal;
-  int line;
+  int          line;
 };
 
 #endif // !TOKEN
