@@ -50,7 +50,7 @@ void defineVisitor(std::ofstream &writer, const std::string &baseName,
   writer << "public:\n";
   for (const auto &type : types) {
     auto typeName = trim(split(type, ":")[0]);
-    writer << "\tvirtual void visit" + typeName + "(const " + typeName + " &" +
+    writer << "\tvirtual std::any visit" + typeName + "(const " + typeName + " &" +
                   baseName + ") = 0;\n";
   }
 
@@ -76,7 +76,7 @@ void defineType(std::ofstream &writer, const std::string &baseName,
     }
   }
 
-  writer << "void accept(Visitor &visitor) override {\n";
+  writer << "std::any accept(Visitor &visitor) override {\n";
   writer << "\tvisitor.visit" + className + "(*this);\n";
   writer << "}\n";
 
@@ -95,11 +95,12 @@ void defineAst(const std::string &outputDir, const std::string &baseName,
 
   outfile << "#ifndef " + baseName + "_H\n";
   outfile << "#define " + baseName + "_H\n";
+  outfile << "#include <any>\n";
   outfile << "#include \"token.h\"\n";
   outfile << "class Visitor;\n\n";
   outfile << "class " + baseName + "{";
   outfile << "public:\n";
-  outfile << "\tvirtual void accept(Visitor &visitor) {}\n";
+  outfile << "\tvirtual std::any accept(Visitor &visitor) {}\n";
   outfile << "};\n\n";
 
   for (const auto &type : types) {
