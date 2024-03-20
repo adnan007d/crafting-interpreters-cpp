@@ -3,13 +3,11 @@
 #include "token_type.h"
 #include <ostream>
 #include <string>
-#include <variant>
-
-using literal_type = std::variant<double, std::string, std::monostate>;
+#include <any>
 
 class Token {
 public:
-  Token(TokenType _type, std::string _lexeme, literal_type _literal, int _line)
+  Token(TokenType _type, std::string _lexeme, std::any _literal, int _line)
       : type{_type}, lexeme{std::move(_lexeme)}, literal{std::move(_literal)},
         line{_line} {}
 
@@ -22,7 +20,7 @@ public:
 
   TokenType    type;
   std::string  lexeme;
-  literal_type literal;
+  std::any literal;
   int          line;
 };
 
