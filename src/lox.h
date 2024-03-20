@@ -1,6 +1,7 @@
 #ifndef LOX
 #define LOX
 
+#include "token.h"
 #include <string>
 class Lox {
 public:
@@ -8,6 +9,7 @@ public:
   void runPrompt();
 
   static void error(int line, const std::string &message);
+  static void error(const Token &token, const std::string &message);
   static void report(int line, const std::string &where,
                      const std::string &message);
 

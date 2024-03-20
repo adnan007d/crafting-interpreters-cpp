@@ -1,4 +1,6 @@
 #include "lox.h"
+#include "ast_printer.h"
+#include "parser.h"
 #include "scanner.h"
 #include "token.h"
 #include <cstdlib>
@@ -11,13 +13,21 @@ bool Lox::hadError = false;
 
 // NOLINTNEXTLINE
 void Lox::run(const std::string &data) {
-  auto scnnaer = Scanner(data);
+  auto scanner = Scanner(data);
 
-  const auto &tokens = scnnaer.scanTokens();
+  const auto &tokens = scanner.scanTokens();
 
-  for (const auto &token : tokens) {
-    std::cout << token << '\n';
+  Parser                parser(tokens);
+  std::unique_ptr<Expr> expression = parser.parse();
+
+  if (hadError) {
+    hadError = false;
+    return;
   }
+
+  std::cout << "Parsed expression: \n";
+
+  std::cout << AstPrinter().print(expression.get()) << '\n';
 }
 
 void Lox::runFile(const std::string &path) {
@@ -40,6 +50,14 @@ void Lox::runFile(const std::string &path) {
 
 void Lox::error(int line, const std::string &message) {
   report(line, "", message);
+}
+
+void Lox::error(const Token &token, const std::string &message) {
+  if (token.type == TokenType::_EOF) {
+    report(token.line, " at end", message);
+  } else {
+    report(token.line, " at '" + token.lexeme + "'", message);
+  }
 }
 
 void Lox::report(int line, const std::string &where,
