@@ -1,6 +1,5 @@
 #include "ast_printer.h"
 #include <iostream>
-#include <variant>
 
 #include "lox.h"
 
@@ -13,8 +12,8 @@ int main(const int argc, const char *argv[]) {
 
   auto lox = Lox();
   Binary expr = Binary(
-      new Unary(Token(TokenType::MINUS, "-", std::monostate{}, 1), new Literal(123.0)),
-      Token(TokenType::STAR, "*", std::monostate{}, 1),
+      new Unary(Token(TokenType::MINUS, "-", std::any{}, 1), new Literal(123.0)),
+      Token(TokenType::STAR, "*", std::any{}, 1),
       new Grouping(new Literal(45.67)));
 
   AstPrinter astPrinter;

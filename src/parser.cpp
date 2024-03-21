@@ -1,9 +1,7 @@
 #include "parser.h"
 #include "lox.h"
 
-#include <algorithm>
 #include <memory>
-#include <variant>
 
 std::unique_ptr<Expr> Parser::expression() { return equality(); };
 
@@ -80,7 +78,7 @@ std::unique_ptr<Expr> Parser::primary() {
     return std::make_unique<Literal>(true);
   }
   if (match(TokenType::NIL)) {
-    return std::make_unique<Literal>(std::monostate{});
+    return std::make_unique<Literal>(std::any{});
   }
 
   if (match(TokenType::NUMBER, TokenType::STRING)) {

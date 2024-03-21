@@ -10,6 +10,8 @@
 
 // NOLINTNEXTLINE
 bool Lox::hadError = false;
+bool Lox::hadRuntimeError = false;
+Interpreter Lox::interpreter = Interpreter{};
 
 // NOLINTNEXTLINE
 void Lox::run(const std::string &data) {
@@ -24,6 +26,8 @@ void Lox::run(const std::string &data) {
     hadError = false;
     return;
   }
+
+  interpreter.interpret(expression.get());
 
   std::cout << "Parsed expression: \n";
 
@@ -43,9 +47,15 @@ void Lox::runFile(const std::string &path) {
     std::exit(1);
   }
 
+  if (Lox::hadRuntimeError) {
+    // NOLINTNEXTLINE
+    std::exit(1);
+  }
+
   run(data);
 
   Lox::hadError = false;
+  Lox::hadRuntimeError = false;
 }
 
 void Lox::error(int line, const std::string &message) {
@@ -58,6 +68,11 @@ void Lox::error(const Token &token, const std::string &message) {
   } else {
     report(token.line, " at '" + token.lexeme + "'", message);
   }
+}
+
+void Lox::runtimeError(const RuntimeError &error) {
+  std::cerr << error.what() << " [line " << error.token.line << +"]" << '\n';
+  Lox::hadRuntimeError = true;
 }
 
 void Lox::report(int line, const std::string &where,

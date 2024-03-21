@@ -5,7 +5,6 @@
 #include <charconv>
 #include <string_view>
 #include <system_error>
-#include <variant>
 
 const std::vector<Token> &Scanner::scanTokens() {
   while (!isAtEnd()) {
@@ -103,7 +102,7 @@ bool Scanner::isAtEnd() {
 
 char Scanner::advance() { return source.at(current++); }
 
-void Scanner::addToken(TokenType type) { addToken(type, std::monostate{}); }
+void Scanner::addToken(TokenType type) { addToken(type, std::any{}); }
 
 void Scanner::addToken(TokenType type, std::any literal) {
   std::string text = source.substr(start, current - start);
